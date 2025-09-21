@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《和平精英》搭子专属“霸道”邀请函</title>
+    <style>
+        /* --- 全局与主题样式 --- */
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+
+        :root {
+            --bg-color: #1a1a1a;
+            --modal-bg-color: #2c2c2c;
+            --primary-pink: #ff69b4;
+            --hover-pink: #ff85c0;
+            --text-color: #f0f0f0;
+            --punishment-red: #d32f2f;
+            --title-font: 'ZCOOL KuaiLe', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- 弹窗容器与通用样式 --- */
+        .modal {
+            background-color: var(--modal-bg-color);
+            border: 2px solid var(--primary-pink);
+            border-radius: 20px;
+            padding: 30px 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.3);
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal h2 {
+            font-family: var(--title-font);
+            color: var(--primary-pink);
+            font-size: 2.5rem;
+        }
+
+        .modal p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        /* --- 按钮样式 --- */
+        .btn {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--hover-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #accept-1, #accept-2 {
+            transition: width 0.4s ease, height 0.4s ease, font-size 0.4s ease;
+        }
+        
+        /* --- 惩罚界面 (已修改) --- */
+        .punishment-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: transparent; /* 核心修改：背景设为透明 */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .punishment-overlay.active {
+            display: flex;
+        }
+        
+        .punishment-text-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .punishment-text {
+            position: absolute;
+            font-size: clamp(2rem, 10vw, 6rem);
+            font-weight: 900;
+            color: var(--punishment-red); /* 核心修改：文字颜色改为红色 */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* 调整阴影以适应透明背景 */
+            opacity: 0.8;
+            white-space: nowrap;
+            user-select: none;
+        }
+        
+        .accept-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--title-font);
+            font-size: clamp(4rem, 25vw, 12rem);
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 35px var(--primary-pink), 0 0 50px var(--primary-pink);
+            z-index: 1001;
+            cursor: pointer;
+            animation: pulse 1.5s infinite ease-in-out;
+            user-select: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+        }
+
+
+        /* --- 最终契约页样式 --- */
+        #final-contract h2 {
+            font-size: 2.2rem;
+        }
+        
+        #results-list {
+            list-style: none;
+            text-align: left;
+            margin: 10px auto;
+            padding: 15px 25px;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        #results-list li {
+            padding: 8px 0;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed rgba(255, 105, 180, 0.3);
+        }
+
+        #results-list li:last-child {
+            border-bottom: none;
+        }
+
+        #results-list .choice {
+            font-weight: bold;
+            color: var(--primary-pink);
+            float: right;
+        }
+
+        .final-quote {
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--hover-pink);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 所有HTML内容保持不变 -->
+    <div class="modal active" id="modal-1">
+        <h2>邀请函</h2>
+        <p>诚挚地邀请你，成为我的固定游戏搭子，一起玩《和平精英》！</p>
+        <div class="button-group">
+            <button class="btn" id="reject-1">不接受</button>
+            <button class="btn" id="accept-1">接受</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-2" data-next="modal-3">
+        <p>那...要和我一起甜蜜双排吗？</p>
+        <div class="button-group">
+            <button class="btn choice-btn" data-question="duo" data-answer="不要">不要</button>
+            <button class="btn choice-btn" data-question="duo" data-answer="要">要</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-3" data-next="modal-4">
+        <p>超体对抗，当我的专属背包侠？</p>
+        <div class="button-group">
+            <button class="btn choice-btn" data-question="superBody" data-answer="不要">不要</button>
+            <button class="btn choice-btn" data-question="superBody" data-answer="要">要</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-4" data-next="modal-5">
+        <p>新版本了，要和我一起全地图打卡拍照吗？</p>
+        <div class="button-group">
+            <button class="btn choice-btn" data-question="map" data-question="map" data-answer="不要">不要</button>
+            <button class="btn choice-btn" data-question="map" data-answer="要">要</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-5" data-next="modal-6">
+        <p>你当钢枪王，我做医疗兵，一起上大分！</p>
+        <div class="button-group">
+            <button class="btn choice-btn" data-question="rank" data-answer="不要">不要</button>
+            <button class="btn choice-btn" data-question="rank" data-answer="要">要</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-6">
+        <p>所以...我们一直玩下去，好不好？</p>
+        <div class="button-group">
+            <button class="btn" id="reject-2">不好</button>
+            <button class="btn" id="accept-2">好</button>
+        </div>
+    </div>
+
+    <div class="modal" id="final-contract">
+        <h2>契约达成！</h2>
+        <p>谢谢你成为我的专属游戏搭子 ^_^</p>
+        <ul id="results-list"></ul>
+        <p class="final-quote">凭此为证，不许反悔！</p>
+        <button class="btn" id="share-btn">生成搭子契约 (点击复制)</button>
+    </div>
+
+    <div class="punishment-overlay" id="punishment-1">
+        <div class="punishment-text-wrapper"></div>
+    </div>
+    
+    <div class="punishment-overlay" id="punishment-2">
+         <div class="punishment-text-wrapper"></div>
+    </div>
+
+
+    <script>
+        // 所有JavaScript内容保持不变
+        document.addEventListener('DOMContentLoaded', () => {
+            const userChoices = { duo: '', superBody: '', map: '', rank: '' };
+            let rejectClicks1 = 0;
+            let rejectClicks2 = 0;
+
+            const modals = document.querySelectorAll('.modal');
+            const acceptBtn1 = document.getElementById('accept-1');
+            const rejectBtn1 = document.getElementById('reject-1');
+            const acceptBtn2 = document.getElementById('accept-2');
+            const rejectBtn2 = document.getElementById('reject-2');
+            const choiceBtns = document.querySelectorAll('.choice-btn');
+            const shareBtn = document.getElementById('share-btn');
+            
+            const punishment1 = document.getElementById('punishment-1');
+            const punishment2 = document.getElementById('punishment-2');
+            
+            let baseWidth = acceptBtn1.offsetWidth;
+            let baseHeight = acceptBtn1.offsetHeight;
+            let baseFontSize = parseFloat(window.getComputedStyle(acceptBtn1, null).getPropertyValue('font-size'));
+
+            function showModal(modalId) {
+                modals.forEach(modal => modal.classList.remove('active'));
+                const nextModal = document.getElementById(modalId);
+                if (nextModal) nextModal.classList.add('active');
+            }
+            
+            function growButton(button, clicks) {
+                const scale = 1 + clicks * 0.25;
+                button.style.width = `${baseWidth * scale}px`;
+                button.style.height = `${baseHeight * scale}px`;
+                button.style.fontSize = `${baseFontSize * (1 + clicks * 0.15)}px`;
+            }
+
+            function triggerPunishment(overlayElement, text, onAcceptCallback) {
+                const wrapper = overlayElement.querySelector('.punishment-text-wrapper');
+                wrapper.innerHTML = '';
+                overlayElement.classList.add('active');
+
+                let count = 0;
+                const maxCount = 80;
+
+                const intervalId = setInterval(() => {
+                    if (count < maxCount) {
+                        const el = document.createElement('div');
+                        el.classList.add('punishment-text');
+                        el.textContent = text;
+                        el.style.transform = `translate(${Math.random() * 80 - 40}vw, ${Math.random() * 80 - 40}vh) rotate(${Math.random() * 60 - 30}deg)`;
+                        el.style.opacity = Math.random() * 0.5 + 0.5;
+                        wrapper.appendChild(el);
+                        count++;
+                    } else {
+                        clearInterval(intervalId);
+                        
+                        const acceptWord = document.createElement('div');
+                        acceptWord.textContent = '接受';
+                        acceptWord.className = 'accept-word';
+                        
+                        acceptWord.addEventListener('click', () => {
+                            overlayElement.classList.remove('active');
+                            onAcceptCallback();
+                        }, { once: true });
+
+                        wrapper.appendChild(acceptWord);
+                    }
+                }, 75);
+            }
+
+            function populateContract() {
+                const list = document.getElementById('results-list');
+                list.innerHTML = `
+                    <li>双排意愿: <span class="choice">${userChoices.duo}</span></li>
+                    <li>超体意愿: <span class="choice">${userChoices.superBody}</span></li>
+                    <li>全图打卡: <span class="choice">${userChoices.map}</span></li>
+                    <li>上分意愿: <span class="choice">${userChoices.rank}</span></li>
+                    <li>最终约定: <span class="choice">我们一直玩!</span></li>
+                `;
+                showModal('final-contract');
+            }
+
+            acceptBtn1.addEventListener('click', () => showModal('modal-2'));
+
+            rejectBtn1.addEventListener('click', () => {
+                rejectClicks1++;
+                if (rejectClicks1 < 5) {
+                    growButton(acceptBtn1, rejectClicks1);
+                    rejectBtn1.style.transform = `scale(${1 - rejectClicks1 * 0.05})`;
+                } else {
+                    triggerPunishment(punishment1, '为什么不接受我的邀请', () => showModal('modal-2'));
+                }
+            });
+
+            choiceBtns.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    userChoices[e.target.dataset.question] = e.target.dataset.answer;
+                    const nextModalId = e.target.closest('.modal').dataset.next;
+                    showModal(nextModalId);
+                });
+            });
+
+            acceptBtn2.addEventListener('click', populateContract);
+
+            rejectBtn2.addEventListener('click', () => {
+                rejectClicks2++;
+                if (rejectClicks2 < 5) {
+                    growButton(acceptBtn2, rejectClicks2);
+                     rejectBtn2.style.transform = `scale(${1 - rejectClicks2 * 0.05})`;
+                } else {
+                    triggerPunishment(punishment2, '为什么不和我一起玩!!!', populateContract);
+                }
+            });
+
+            shareBtn.addEventListener('click', () => {
+                const yourName = "你的昵称";
+                const friendName = "好友昵称";
+                const shareText = `
+    💌 和平精英搭子契约 💌
+
+    【${friendName}】已接受【${yourName}】的霸道邀请！
+
+    --- 契约清单 ---
+    双排意愿：${userChoices.duo}
+    超体意愿：${userChoices.superBody}
+    全图打卡：${userChoices.map}
+    上分意愿：${userChoices.rank}
+    最终约定：我们一直玩!
+    -----------------
+
+    凭此为证，不许反悔！
+    你也来制作你的专属邀请函吧！链接: ${window.location.href.split('?')[0]}
+                `;
+
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(shareText.trim()).then(() => {
+                        shareBtn.textContent = '已复制到剪贴板!';
+                        setTimeout(() => { shareBtn.textContent = '生成搭子契约 (点击复制)'; }, 2000);
+                    }).catch(err => {
+                        alert('复制失败，请手动复制。');
+                    });
+                } else {
+                    alert('你的浏览器不支持自动复制，请手动复制文本。');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
